@@ -1,0 +1,22 @@
+<div class="row my-3">
+   {% for products in home %}
+  <div class="col-sm-3 my-2">
+    <div class="card color-black text-info" > 
+      <div class="card-body text-center">
+       <a href="{% url 'product-detail' products.category.slug products.slug %}">
+            <img class="rounded card-img-top" src="{{ products.product_image.url }}" width="275" height="240">
+        </a>
+        <hr>
+        <h4 class="mt-2"><b>{{ products.title }}</b></h4>
+        <hr>
+        <h5 class="mt-2">$ {{ products.price }}</h5>
+        
+        <a class="text-light" href="{% url 'product-detail' products.category.slug products.slug %}">
+           <button type="submit" class="btn btn-white text-dark"><em>view product</em></button>
+        </a>
+      </div>
+   
+     </div>
+  </div>
+   {% endfor %}
+</div>

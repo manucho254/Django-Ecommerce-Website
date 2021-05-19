@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Cart | {% endblock %}
+
+{% block content %}
+
+    {% if cart %}
+    <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+             <h1 class="card-header text-center color-black text-info"><em>Cart Items:</em></h1>
+             <div class="card-body">
+                <table class="table table-sm table-secondary my-4">
+                    <thead>
+                        <th></th>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th></th>
+                    </thead>
+
+                    <tbody>
+                        {% for item in cart %}
+                            <tr>
+                                <td>
+                                <img src="{{ item.product.get_thumbnail }}" width=100 height=70>
+                                <td>
+                                    <a href="{% url 'product-detail' item.product.category.slug item.product.slug %}">{{ item.product.title }}</a>
+                                </td>
+                                <td>
+                                    {{ item.quantity }}
+
+                                    <a href="?change_quantity={{ item.id }}&quantity=-1">-</a>
+                                    <a href="?change_quantity={{ item.id }}&quantity=1">+</a>
+                                </td>
+                                <td>${{ item.total_price }}</td>
+                                <td><a href="?remove_from_cart={{ item.id }}" class="delete">Remove</a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td><strong>Total cost</strong></td>
+                            <td><strong>{{ cart|length}}</strong></td>
+                            <td colspan="2"><strong>${{ cart.get_total_cost }}</strong></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+         </div>
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <h2 class="card-header my-2 text-center text-info color-black">Billing information</h2>
+ <div class="row">
+  
+   <div class="col-md-6">
+       
+        <form method="post" action="." id="payment-form">
+            {% csrf_token %} 
+             {% if form.non_field_errors %}
+              <div class="alert alert-danger">
+                 {{ form.non_field_errors }}
+                </div>
+             {% endif %}
+                {% if form.errors %}
+                 <div class="alert alert-danger">
+                    <ul>
+                        {% for field in form %}
+                        {% for error in fiel.errors %}
+                        <li><strong>{{ field.label }} </strong>{{ error }}</li>
+                        {% endfor %}
+                        {% endfor %}
+                    </ul>
+                    </div>
+                  {% endif %}
+                    <div class="form-group">
+                        <label>First name</label>
+                        <input class="input form-control" type="text" name="first_name">
+                    </div>
+                    <div class="form-group">
+                        <label>Last name</label>
+                        <input class="input form-control" type="text" name="last_name">
+                        
+                    </div>
+
+                    <div class="form-group">
+                        <label>E-mail</label>
+
+                        <input class="input form-control" type="email" name="email">
+                    </div>
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input class="input form-control" type="text" name="phone">
+                    </div>
+          </div>    
+              <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Address</label>
+                        <input class="input form-control" type="text" name="address">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="mr-3">Zip code</label>
+                        <input class="input form-control" type="text" name="zipcode">
+                    </div>
+
+                    <div class="form-group">
+                        <label  class="ml-2 mr-3">Place</label>
+                        <input class="input form-control" type="text" name="place">
+                    </div>
+                    <div class="container">
+                     <h2 class="card-header my-2 mb-4 text-center">Credit-Card Details:</h2>
+                
+                        <div class="mb-4">
+                            <div id="card-element">
+                            </div>
+                        </div>
+                        
+                        <button class="btn btn-lg rounded-pill color-black text-info">Checkout</button>
+
+                    </div>
+                </div>        
+        </form>
+      <div class="col-md-12 mb-5 ">  
+        <a href="{% url 'home' %}" class="text-light text-center">
+            <button class="btn btn-lg text-info color-black">
+                <em>&larr; Back</em>
+            </button> 
+        </a>
+    </div>
+    </div>
+</div>
+
+
+{% else %}
+    <div class="offset-3 my-5 ">
+       <div class="text-danger my-4">
+          <h2><strong>You don't have any products in your cart!</strong><h2>
+        </div>
+            <a href="{% url 'home' %}" class="text-light text-center">
+                <button class="btn btn-lg" style="background-color:black;">
+                    <h4 class="text-white"><em>&larr; Back</em></h4>
+                </button> 
+            </a>
+    </div>
+{% endif %}
+
+{% block scripts %}
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        var stripe = Stripe('{{ stripe_pub_key }}');
+        var elements = stripe.elements();
+
+        var card = elements.create('card');
+
+        card.mount('#card-element');
+
+        var form = document.getElementById('payment-form');
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            stripe.createToken(card).then(function(result) {
+                if (result.error) {
+                    var errorElement = document.getElementById('card-errors');
+                    errorElement.textContent = result.error.message;
+                } else {
+                    stripeTokenHandler(result.token);
+                }
+            });
+        });
+
+        function stripeTokenHandler(token) {
+            var form = document.getElementById('payment-form');
+            var hiddenInput = document.createElement('input');
+            hiddenInput.setAttribute('type', 'hidden');
+            hiddenInput.setAttribute('name', 'stripe_token');
+            hiddenInput.setAttribute('value', token.id);
+            form.appendChild(hiddenInput);
+
+            form.submit();
+        }
+    </script>
+{% endblock %}
+
+{% include "footer.html" %}
+
+{% endblock %}

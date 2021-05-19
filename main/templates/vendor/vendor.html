@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+{% for products in vendor.products.all %}
+      {% include "list_other_products.html" %}
+{% endfor %}
+
+{% endblock content %}

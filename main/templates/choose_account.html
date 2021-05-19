@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+<div class="container my-4">
+<div class="row">
+ <div class="col-sm-6 offset-md-3">
+    <div class="card ">
+      <h1 class="card-header text-center text-info  color-black"><b><em>Create your account:</em></b></h1>
+
+       <div class="container text-center">
+         <div class="card-body ">
+            <h2 class="my-5"><b><em>Sell products on our platforms.</em></b></h2>
+            <a href="{% url 'become-vendor' %}" class="text-light">
+            <button class="btn  text-info  color-black">
+                <h1><em>Become a Vendor</em></h1>
+            </button> 
+            </a>
+         <h2 class="my-5"><b><em>Buy products on our platforms.</em></b></h2>
+          <a href="{% url 'register' %}" class="text-info">
+            <button class="btn color-black">
+                 <h1><em>Become a Buyer</em></h1>
+            </a>
+            </button> 
+          </div>
+       </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+{% include "footer.html" %}
+
+{% endblock content %}

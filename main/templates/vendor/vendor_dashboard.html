@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content  %}
+
+<div class="container my-2">
+     <div class="card text-dark">
+      <h1 class="card-header text-info color-black text-center"><em><strong>Vendor: {{ vendor.name.upper }}</strong></em></h1>
+      <div class="p-3 text-info">
+        <h4 class="my-2 "><em><strong>&#x25CF; My Balance: {{ vendor.get_balance }}</strong></em></h4>
+        <h4 class="my-2 mb-3"><em><strong>&#x25CF; My Paid Amount: {{ vendor.get_paid_amount }}</strong></em></h4>
+        <a href="{% url 'vendor-edit' %}"><button class="btn color-black text-info">Edit Profile</button></a>
+        <a href="{% url 'vendor-products' vendor.id %}"><button class="btn color-black text-info">Edit Profile</button></a>
+     </div>
+   </div>
+     <div class="card my-5">
+      <div class="card p-3">
+        <h3 class="card-header text-center text-info color-black">My products</h3>
+        <a href="{% url 'add_product' %}">
+           <button class="btn my-2 ml-2 text-info color-black">Add product</button>
+         </a> 
+
+        {% if products %}
+        
+           <table class="table table-sm table-secondary my-4">
+               <thead>
+                  <tr>
+                     <th scope="col"><h3>Item:</h3></th>
+                     <th scope="col"><h3>Price:</h3></th>
+                  </tr>
+               </thead>
+                  <tbody>
+                    {% for product in products %}
+                     <tr>
+                        <td>{{ product.title }}</td>
+                        <td>$ {{ product.price }}</td>
+                     </tr>
+                   {% endfor %}
+                  </tbody>
+               </table>
+        {% else %}
+             <p>You dont have any products</p>
+        {% endif %}
+      </div>
+    <div>
+   </div>
+ </div>
+</div>
+
+<div class="container">
+ <div class="card">
+    <h2 class="card-header mb-4 text-center color-black text-info"><em>My orders</em></h2>
+
+    {% if orders %}
+        {% for order in orders %}
+            <div class="{% if order.fully_paid %} bg-light {% else %}bg-info{% endif %} mb-2 p-4">
+                <div class="col-md-12">
+                    <div class="col-md-12">
+                        <h3 class="is-size-4">#{{ order.id }} - {{ order.first_name }} {{ order.last_name }}</h3>
+                    </div>
+
+                    <div class="col">
+                        <b>Name:</b> {{ order.first_name }} {{ order.last_name }}<br>
+                        <b>Address:</b> {{ order.address }}<br>
+                        <b>Zip and place:</b> {{ order.zipcode }} {{ order.place }}<br>
+                        <b>E-mail:</b> {{ order.email }}<br>
+                        <b>Phone:</b> {{ order.phone }}
+
+                        <table class="table mt-4">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Paid</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for item in order.items.all %}
+                                    {% if item.vendor == request.user.vendor %}
+                                        <tr>
+                                            <td>{{ item.product.title }}</td>
+                                            <td>${{ item.product.price }}</td>
+                                            <td>{{ item.quantity }}</td>
+                                            <td>{{ item.vendor_paid|yesno:"Yes,No" }}</td>
+                                            <td>${{ item.get_total_price }}</td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+             <hr>
+            </div>
+        {% endfor %}
+    {% endif %}
+  </div>
+</div>
+</div>
+
+{% include 'footer.html' %}
+
+{% endblock content %}

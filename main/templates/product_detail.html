@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+
+{% if messages %}
+          <ol>
+       {% for message in  messages %}
+       <div class="container">
+         <div class="alert alert-success alert-dismissible text-center fade show" role="alert">
+          <strong>{{ message }}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+       </div>
+       {% endfor %}
+    </ol>
+{% endif %}
+
+<div class="container">
+<div class="row my-5">
+  <div class="col-md-8">
+        <img class="img-fluid rounded" src="{{ product.product_image.url }}" alt="product_image" width="600" height="500">
+  </div>
+  <div class="col-md-4">
+   <div class="card p-2">
+        <h2 class="card-header color-black text-info text-center"><em>{{ product.title }}</em></h2>
+        <div class="card-body p-3">
+          <h3>Description:</h3>
+          <hr>
+          <p class=" my-1 ml-3"><b>{{ product.description }}</b></p>
+          <hr>
+          <h4 class="my-3 ml-2"><em><strong>Price : ${{product.price }}</strong></em></h4>
+        </div>
+          
+       {% if product %}
+         <div class="form-inline">
+          <form method="post">
+             {% csrf_token %}
+              <input class="form-control" type="number" value="1" min="1" name="quantity"/>
+                <button class="btn color-black text-info">
+                 <em>Add to Cart</em>
+                <i class="fas fa-shopping-cart ml-1"></i>
+                </button>
+           </form>
+          </div>
+        </div>
+        {% endif %}
+  </div>
+ </div>
+</div>
+
+{% if similar_products %}
+
+<div class="container">
+  <div class="text-info">
+    <h1><em><b>Similar Products:</h1></em></b>
+  <hr>
+</div>
+</div>
+
+<div class="container mb-5">
+ <div class="row my-4">
+   {% for products in similar_products %}
+    {% include 'list_other_products.html' %}
+   {% endfor %}
+ </div>
+</div>
+{% endif %}
+
+{% include 'footer.html' %}
+
+{% endblock content %}
