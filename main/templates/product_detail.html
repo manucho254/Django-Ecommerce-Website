@@ -35,14 +35,16 @@
         </div>
           
        {% if product %}
-         <div class="form-inline">
+         <div class="form-inline ">
           <form method="post">
              {% csrf_token %}
               <input class="form-control" type="number" value="1" min="1" name="quantity"/>
+              <div clas='mx-5'>
                 <button class="btn color-black text-info">
                  <em>Add to Cart</em>
                 <i class="fas fa-shopping-cart ml-1"></i>
                 </button>
+              </div>
            </form>
           </div>
         </div>

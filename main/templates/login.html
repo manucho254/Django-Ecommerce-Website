@@ -22,11 +22,10 @@
   <div class="col-sm-6 offset-md-3 mb-5 p-4">
     <div class="card">
      <h2 class="card-header color-black text-info mb-3 text-center"><strong>Login</strong></h2>
-        <form method="post" class="p-5">
-
+        <form method="post" class='p-5'>
           {% csrf_token %}
-            {{ form|crispy  }}
-          <div class="text-center">
+            {{ form|crispy }}
+          <div class="text-center p-4">
             <button type="submit" class="btn text-info  color-black">LOG IN</button>
           </div>
         </form>
