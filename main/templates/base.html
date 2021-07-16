@@ -51,11 +51,8 @@
         <a class="nav-link  text-light" href="{% url 'logout' %}"><h4><em>Logout</em></h4></a>
       </li>
     {% else %}
-      <li class="nav-item my-4 mr-2 ml-2">
-        <a class="nav-link  text-light" href="{% url 'choose' %}"><h4><em>SignUp</em></h4></a>
-      </li>
        <li class="nav-item my-4 mr-5 ml-2">
-        <a class="nav-link  text-light" href="{% url 'login' %}"><h4><em>Signin</em></h4></a>
+        <a class="nav-link  text-light" href="{% url 'login' %}"><h4><em>Sign In</em></h4></a>
       </li>
     {% endif %}
     </ul>

@@ -4,29 +4,38 @@
 {% load static %}
 
 <div class="container my-4">
-<div class="row">
- <div class="col-sm-6 offset-md-3">
-    <div class="card ">
-      <h1 class="card-header text-center text-info  color-black"><b><em>Create your account:</em></b></h1>
-
-       <div class="container text-center">
-         <div class="card-body ">
-            <h2 class="my-5"><b><em>Sell products on our platforms.</em></b></h2>
+<div class="row ">
+  <h1 class="card-header text-center text-info  color-black"><b><em>Create your account:</em></b></h1>
+ <div class="col-lg-6 justify-content-center p-5">
+    <div class="card">
+     
+      <div class="card-body text-center">
+            <p class="my-5 lead card-title h4"><b><em>Sell products on our platforms.</em></b></p>
+       
             <a href="{% url 'become-vendor' %}" class="text-light">
             <button class="btn  text-info  color-black">
                 <h1><em>Become a Vendor</em></h1>
             </button> 
-            </a>
-         <h2 class="my-5"><b><em>Buy products on our platforms.</em></b></h2>
+        </a>
+      </div>
+    </div>
+  </div>
+    
+<div class="col-lg-6 p-5">
+   <div class="card">
+     <div class="card-body text-center">
+            
+         <p class="my-5 lead card-title h4"><b><em>Buy products on our platforms.</em></b></p>
           <a href="{% url 'register' %}" class="text-info">
-            <button class="btn color-black">
+            <button class="btn color-black text-info">
                  <h1><em>Become a Buyer</em></h1>
+                  </button> 
             </a>
-            </button> 
+           
           </div>
        </div>
     </div>
-  </div>
+
   </div>
 </div>
 
