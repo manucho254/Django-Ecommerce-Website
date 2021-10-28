@@ -34,9 +34,12 @@
 {% for products in category.products.all %}
     {% if products %}
       {% include "list_other_products.html" %}
-    {% else %}
-      <h1>No items in this category</h1>
     {% endif %}
+
+    {% empty %}
+    <div calss="p-5">
+      <h1 class="text-center">No items in this category</h1>
+    </div>
 {% endfor %}
  </div>
 </div>
